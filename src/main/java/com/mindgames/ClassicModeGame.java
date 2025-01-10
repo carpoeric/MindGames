@@ -5,16 +5,23 @@ import java.util.Arrays;
 import static com.mindgames.GameApp.*;
 
 public class ClassicModeGame {
+    private char[] arrayRandomNumber;
+
     public void play(Scanner scanner) {
         String randomNumber = randomNumber();
-        char[] arrayRandomNumber = randomNumber.toCharArray();
+        arrayRandomNumber = randomNumber.toCharArray();
         System.out.println("\nWelcome to Classic Mode!\nPlease type your first guess: ");
+        System.out.println("If you're stumped, you can press 'H' for a hint! (one number in its correct location)");
 
         int tries = 1;
         while (tries <= 10) {
             String numberInput = getValidGuess(scanner);
-            char[] arrayNumberTyped = numberInput.toCharArray();
+            if (numberInput.equals("H")) {
+                provideHint();
+                continue;
+            }
 
+            char[] arrayNumberTyped = numberInput.toCharArray();
             System.out.println("Guess " + tries + "/10: " + numberInput);
 
             if (Arrays.equals(arrayNumberTyped, arrayRandomNumber)) {
@@ -56,12 +63,17 @@ public class ClassicModeGame {
     }
 
     private String getValidGuess(Scanner scanner) {
-        String numberInput = scanner.nextLine().trim();
-        while (numberInput.length() != 4 || !numberInput.matches("[0-7]+")) {
+        String numberInput = scanner.nextLine().trim().toUpperCase();
+        while (!(numberInput.length() == 4 && numberInput.matches("[0-7]+")) && !numberInput.equals("H")) {
             System.out.print("Invalid guess... Give it another go: ");
-            numberInput = scanner.nextLine().trim();
+            numberInput = scanner.nextLine().trim().toUpperCase();
         }
         return numberInput;
+    }
+
+    private void provideHint() {
+        int randomIndex = (int) (Math.random() * arrayRandomNumber.length);
+        System.out.println("Hint: The digit at position " + (randomIndex + 1) + " is " + arrayRandomNumber[randomIndex]);
     }
 
     private void printMinimalFeedback(char[] arrayNumberTyped, char[] arrayRandomNumber) {
@@ -73,6 +85,7 @@ public class ClassicModeGame {
         for (int i = 0; i < 4; i++) {
             if (arrayNumberTyped[i] == arrayRandomNumber[i]) {
                 correctLocations++;
+                correctNumbers++;
                 matched[i] = true;
                 guessed[i] = true;
             }
@@ -90,11 +103,7 @@ public class ClassicModeGame {
             }
         }
 
-        if (correctNumbers == 0 && correctLocations == 0) {
-            System.out.println("all incorrect");
-        } else {
-            System.out.println(correctNumbers + " correct number(s) and " + correctLocations + " correct location(s)");
-        }
+        System.out.println(correctNumbers + " correct number(s) and " + correctLocations + " correct location(s)");
     }
 
     private void printColoredOutput(char[] array, String color) {

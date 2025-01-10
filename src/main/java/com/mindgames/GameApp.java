@@ -51,12 +51,13 @@ public class GameApp {
         System.out.println("CLASSIC MODE: ");
         System.out.println("You will have 10 tries to figure out the four digit number combination I am thinking of with minimal hints!");
         System.out.println("Each guess should consist of any digits from 0-7 (none of my combos use 8 or 9!). Hit the enter button to submit.");
+        System.out.println("If you're stumped, you can press H for a hint! (one number in it's correct location)");
 
         System.out.println("\nSINGLE MIND MODE: ");
         System.out.println("You will have 10 tries to figure out the four digit number combination I am thinking of.");
         System.out.println("Once you've made a guess, I will give you some hints to help you figure out the correct combination.");
 
-        System.out.println("\nHere's what the hints look like:");
+        System.out.println("\nHow the hints work for this mode:");
         System.out.println(ANSI_GREEN_BACKGROUND + " 0 " + ANSI_YELLOW_BACKGROUND + " 1 " + ANSI_BLACK_BACKGROUND + " 2 " + " 3 " + ANSI_RESET);
         System.out.println("Number " + ANSI_GREEN_BACKGROUND + " 0 " + ANSI_RESET + " is in the combo and in the correct spot.");
         System.out.println("Number " + ANSI_YELLOW_BACKGROUND + " 1 " + ANSI_RESET + " is in the combo but in the wrong spot.");
@@ -64,7 +65,8 @@ public class GameApp {
 
         System.out.println("\nDOUBLE TROUBLE MODE: ");
         System.out.println("If you're up for the challenge, try out Double Trouble!");
-        System.out.println("Double the combo, double the fun! Here you will have to guess two combinations at the same time, but you will have 12 tries to do so.");
+        System.out.println("It's like Single Mind except with TWO combinations. Double the combo, double the fun!");
+        System.out.println("Here you will have to guess two combinations at the same time, but you will have 12 tries to do so.");
 
         System.out.println("\nEnter 'M' to return to the main menu.");
         System.out.println("Enter '0' to start Classic Mode.");
@@ -73,25 +75,28 @@ public class GameApp {
         System.out.println("Enter 'X' to quit the game.");
         System.out.println(ANSI_BLACK_BACKGROUND + "ENTER HERE:" + ANSI_RESET);
 
+        label:
         while (true) {
             String input = scanner.nextLine().trim().toUpperCase();
-            if (input.equals("M")) {
-                mainMenu();
-                break;
-            } else if (input.equals("1")) {
-                new SingleMindGame().play(scanner);
-                break;
-            } else if (input.equals("2")) {
-                new DoubleCombinationGame().play(scanner);
-                break;
-            } else if (input.equals("0")) {
-                new ClassicModeGame().play(scanner);
-                break;
-            } else if (input.equals("X")) {
-                System.out.println("Quitting the game. Goodbye!");
-                System.exit(0);
-            } else {
-                System.out.println("Invalid input. Please enter 'M', '1', '2', '3', or 'X'.");
+            switch (input) {
+                case "M":
+                    mainMenu();
+                    break label;
+                case "1":
+                    new SingleMindGame().play(scanner);
+                    break label;
+                case "2":
+                    new DoubleCombinationGame().play(scanner);
+                    break label;
+                case "0":
+                    new ClassicModeGame().play(scanner);
+                    break label;
+                case "X":
+                    System.out.println("Quitting the game. Goodbye!");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid input. Please enter 'M', '1', '2', '3', or 'X'.");
+                    break;
             }
         }
     }

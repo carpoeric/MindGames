@@ -12,7 +12,7 @@ public class DoubleCombinationGame {
         char[] arrayRandomNumber2 = randomNumber2.toCharArray();
         boolean solved1 = false;
         boolean solved2 = false;
-        System.out.println("\nGUESSING TIME!\nPlease type your first guess: ");
+        System.out.println("\nWelcome to DOUBLE TROUBLE!\nPlease type your first guess: ");
 
         int tries = 1;
         while (tries <= 12) {
@@ -62,6 +62,20 @@ public class DoubleCombinationGame {
         printColoredOutput(arrayRandomNumber1, ANSI_GREEN_BACKGROUND);
         System.out.print("Combination 2: ");
         printColoredOutput(arrayRandomNumber2, ANSI_GREEN_BACKGROUND);
+
+        System.out.println("\nWould you like to play again?");
+        System.out.println("Enter '1' to play Classic Mode again!");
+        System.out.println("Enter '2' to play DOUBLE TROUBLE again!");
+        System.out.println("Enter 'M' to return to the main menu.");
+        System.out.println(ANSI_BLACK_BACKGROUND + "ENTER HERE:" + ANSI_RESET);
+        String scanInput = scanner.nextLine().trim().toUpperCase();
+        if (scanInput.equals("1")) {
+            play(scanner);
+        } else if (scanInput.equals("2")) {
+            new DoubleCombinationGame().play(scanner);
+        } else if (scanInput.equals("M")) {
+            GameApp.mainMenu();
+        }
     }
 
     private String getValidGuess(Scanner scanner) {

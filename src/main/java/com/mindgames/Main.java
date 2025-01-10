@@ -3,8 +3,9 @@ package com.mindgames;
 import java.util.Scanner;
 
 public class Main {
-    private static final String OPTION_CLASSIC_MODE = "1";
+    private static final String OPTION_SINGLE_MIND_MODE = "1";
     private static final String OPTION_DOUBLE_TROUBLE = "2";
+    private static final String OPTION_CLASSIC_MODE = "0";
     private static final String OPTION_MAIN_MENU = "M";
     private static final String OPTION_QUIT = "X";
 
@@ -15,10 +16,12 @@ public class Main {
         while (true) {
             String scanInput = getUserInput(scanner);
 
-            if (scanInput.equals(OPTION_CLASSIC_MODE)) {
-                new SingleCombinationGame().play(scanner);
+            if (scanInput.equals(OPTION_SINGLE_MIND_MODE)) {
+                new SingleMindGame().play(scanner);
             } else if (scanInput.equals(OPTION_DOUBLE_TROUBLE)) {
                 new DoubleCombinationGame().play(scanner);
+            } else if (scanInput.equals(OPTION_CLASSIC_MODE)) {
+                new ClassicModeGame().play(scanner);
             } else if (scanInput.equals(OPTION_MAIN_MENU)) {
                 System.out.println("Returning to the main menu!");
                 GameApp.mainMenu();
@@ -26,7 +29,7 @@ public class Main {
                 System.out.println("Quitting the game... Goodbye!");
                 System.exit(0);
             } else {
-                System.out.println("Invalid input. Please enter '1', '2', 'M', or 'X'.");
+                System.out.println("Invalid input. Please enter '0', '1', '2', 'M', or 'X'.");
             }
         }
     }

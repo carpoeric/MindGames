@@ -41,7 +41,7 @@ public class GameApp {
                 System.out.println("Quitting the game. Goodbye!");
                 System.exit(0);
             } else {
-                System.out.println("Invalid input. Please enter 'Q', '1', '2', '3', or 'X'.");
+                System.out.println("Invalid input. Please enter 'Q', '1', '2', '0', or 'X'.");
             }
         }
     }

@@ -22,7 +22,11 @@ public class GameApp {
         System.out.println("Number " + ANSI_GREEN_BACKGROUND + " 0 " + ANSI_RESET + " is in the combo and in the correct spot.");
         System.out.println("Number " + ANSI_YELLOW_BACKGROUND + " 1 " + ANSI_RESET + " is in the combo but in the wrong spot.");
         System.out.println("Number " + ANSI_BLACK_BACKGROUND + " 2 " + ANSI_RESET + " & Number " + ANSI_BLACK_BACKGROUND + " 3 " + ANSI_RESET  + " are not in the combo at all.");
-        System.out.println("\nIf you're up for the challenge, please enter the number 1 to start:");
+        System.out.println("\nIf you're up for the challenge, We have a harder mode called Double Trouble!");
+        System.out.println("Here you will have to guess two combinations at the same time, but you will have 12 tries to do so.");
+        System.out.println("\nEnter the number 1 to start Classic Mode.");
+        System.out.println("Enter the number 2 to start the Double Trouble Mode.");
+        System.out.println(ANSI_BLACK_BACKGROUND + "ENTER HERE:" + ANSI_RESET);
     }
 
     public static String randomNumber() {

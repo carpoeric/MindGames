@@ -3,13 +3,20 @@ package com.mindgames;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GameApp {
+    private static final Logger LOGGER = Logger.getLogger(GameApp.class.getName());
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
     public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
     public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
+
+  // API URL
+    private static String apiUrl = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
 
     public static void mainMenu() {
         Scanner scanner = new Scanner(System.in);
@@ -23,25 +30,35 @@ public class GameApp {
         System.out.println("Enter 'X' to quit the game.");
         System.out.println(ANSI_BLACK_BACKGROUND + "ENTER HERE:" + ANSI_RESET);
 
+        handleUserInput(scanner);
+    }
+
+    private static void handleUserInput(Scanner scanner) {
         while (true) {
             String input = scanner.nextLine().trim().toUpperCase();
-            if (input.equals("Q")) {
-                showInstructions(scanner);
-                break;
-            } else if (input.equals("1")) {
-                new SingleMindGame().play(scanner);
-                break;
-            } else if (input.equals("2")) {
-                new DoubleCombinationGame().play(scanner);
-                break;
-            } else if (input.equals("0")) {
-                new ClassicModeGame().play(scanner);
-                break;
-            } else if (input.equals("X")) {
-                System.out.println("Quitting the game. Goodbye!");
-                System.exit(0);
-            } else {
+            Optional<GameOption> option = GameOption.fromString(input);
+
+            if (!option.isPresent()) {
                 System.out.println("Invalid input. Please enter 'Q', '1', '2', '0', or 'X'.");
+                continue;
+            }
+
+            switch (option.get()) {
+                case INSTRUCTIONS:
+                    showInstructions(scanner);
+                    return;
+                case SINGLE_MIND_MODE:
+                    new SingleMindGame().play(scanner);
+                    return;
+                case DOUBLE_TROUBLE:
+                    new DoubleCombinationGame().play(scanner);
+                    return;
+                case CLASSIC_MODE:
+                    new ClassicModeGame().play(scanner);
+                    return;
+                case QUIT:
+                    System.out.println("Quitting the game. Goodbye!");
+                    System.exit(0);
             }
         }
     }
@@ -51,7 +68,7 @@ public class GameApp {
         System.out.println("CLASSIC MODE: ");
         System.out.println("You will have 10 tries to figure out the four digit number combination I am thinking of with minimal hints!");
         System.out.println("Each guess should consist of any digits from 0-7 (none of my combos use 8 or 9!). Hit the enter button to submit.");
-        System.out.println("If you're stumped, you can press H for a hint! (one number in it's correct location)");
+        System.out.println("If you're stumped, you can press H for a hint! (one number in its correct location)");
 
         System.out.println("\nSINGLE MIND MODE: ");
         System.out.println("You will have 10 tries to figure out the four digit number combination I am thinking of.");
@@ -75,34 +92,10 @@ public class GameApp {
         System.out.println("Enter 'X' to quit the game.");
         System.out.println(ANSI_BLACK_BACKGROUND + "ENTER HERE:" + ANSI_RESET);
 
-        label:
-        while (true) {
-            String input = scanner.nextLine().trim().toUpperCase();
-            switch (input) {
-                case "M":
-                    mainMenu();
-                    break label;
-                case "1":
-                    new SingleMindGame().play(scanner);
-                    break label;
-                case "2":
-                    new DoubleCombinationGame().play(scanner);
-                    break label;
-                case "0":
-                    new ClassicModeGame().play(scanner);
-                    break label;
-                case "X":
-                    System.out.println("Quitting the game. Goodbye!");
-                    System.exit(0);
-                default:
-                    System.out.println("Invalid input. Please enter 'M', '1', '2', '3', or 'X'.");
-                    break;
-            }
-        }
+        handleUserInput(scanner);
     }
 
     public static String randomNumber() {
-        String apiUrl = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
         StringBuilder randomNumbers = new StringBuilder();
 
         try {
@@ -116,7 +109,7 @@ public class GameApp {
             }
             scanner.close();
         } catch (IOException e) {
-            System.err.println("Error fetching random numbers: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error fetching random numbers", e);
         }
 
         return randomNumbers.toString();

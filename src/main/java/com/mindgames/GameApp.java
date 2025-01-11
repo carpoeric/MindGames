@@ -66,12 +66,12 @@ public class GameApp {
     private static void showInstructions(Scanner scanner) {
         System.out.println("\n-----INTRODUCTION & HINTS-----");
         System.out.println("CLASSIC MODE: ");
-        System.out.println("You will have 10 tries to figure out the four digit number combination I am thinking of with minimal hints!");
+        System.out.println("You will have 10 tries to figure out the four-digit number combination I am thinking of with minimal hints!");
         System.out.println("Each guess should consist of any digits from 0-7 (none of my combos use 8 or 9!). Hit the enter button to submit.");
         System.out.println("If you're stumped, you can press H for a hint! (one number in its correct location)");
 
         System.out.println("\nSINGLE MIND MODE: ");
-        System.out.println("You will have 10 tries to figure out the four digit number combination I am thinking of.");
+        System.out.println("You will have 10 tries to figure out the four-digit number combination I am thinking of.");
         System.out.println("Once you've made a guess, I will give you some hints to help you figure out the correct combination.");
 
         System.out.println("\nHow the hints work for this mode:");

@@ -119,3 +119,8 @@ void shouldCheckGameLogic() {
     assertEquals("1A2B", game.checkGuess("1243"));
 }
 ```
+## Screenshots
+![Screenshot 2025-01-10 at 7 49 38 PM](https://github.com/user-attachments/assets/47cbd396-a8be-4653-8bd2-e09bac790690)
+![Screenshot 2025-01-10 at 7 49 47 PM](https://github.com/user-attachments/assets/971d2e72-ee33-4f32-bddd-0cd8745ddf7f)
+![Screenshot 2025-01-10 at 7 50 22 PM](https://github.com/user-attachments/assets/f40354d5-fc0a-45e5-8984-ac97b86771b2)
+

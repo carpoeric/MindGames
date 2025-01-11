@@ -15,55 +15,88 @@ public class GameApp {
     public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
     public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
 
-  // API URL
     private static String apiUrl = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
 
-    public static void mainMenu() {
+    public static void mainMenu(User currentUser) {
+        System.out.println(" __    __   __   __   __   _____    ______   ______   __    __   ______   ______    ");
+        System.out.println("/\\ \"-./  \\ /\\ \\ /\\ \"-.\\ \\ /\\  __-. /\\  ___\\ /\\  __ \\ /\\ \"-./  \\ /\\  ___\\ /\\  ___\\   ");
+        System.out.println("\\ \\ \\-./\\ \\\\ \\ \\\\ \\ \\-.  \\\\ \\ \\/\\ \\\\ \\ \\__ \\\\ \\  __ \\\\ \\ \\-./\\ \\\\ \\  __\\ \\ \\___  \\  ");
+        System.out.println(" \\ \\_\\ \\ \\_\\\\ \\_\\\\ \\_\\\\\"\\_\\\\ \\____- \\ \\_____\\\\ \\_\\ \\_\\\\ \\_\\ \\ \\_\\\\ \\_____\\\\/\\_____\\ ");
+        System.out.println("  \\/_/  \\/_/ \\/_/ \\/_/ \\/_/ \\/____/  \\/_____/ \\/_/\\/_/ \\/_/  \\/_/ \\/_____/ \\/_____/ ");
+
         Scanner scanner = new Scanner(System.in);
         System.out.println();
-        System.out.println("\u001B[32mWelcome to MINDGAMES!\u001B[0m");
+        System.out.println("\u001B[32mWelcome to MINDGAMES, " + currentUser.getUsername() + "!\u001B[0m");
+
         System.out.println("MINDGAMES is a fun and challenging game where you have to guess a combination of numbers!");
         System.out.println("\nEnter 'Q' if it's your first time! Here, you can see the instructions and hint example.");
         System.out.println("Enter '0' to start Classic Mode.");
         System.out.println("Enter '1' to start Single Mind Mode.");
         System.out.println("Enter '2' to start Double Trouble.");
+        System.out.println("Enter 'D' to display user data.");
         System.out.println("Enter 'X' to quit the game.");
         System.out.println(ANSI_BLACK_BACKGROUND + "ENTER HERE:" + ANSI_RESET);
 
-        handleUserInput(scanner);
+        handleUserInput(scanner, currentUser);
     }
 
-    private static void handleUserInput(Scanner scanner) {
+    private static void handleUserInput(Scanner scanner, User currentUser) {
         while (true) {
             String input = scanner.nextLine().trim().toUpperCase();
             Optional<GameOption> option = GameOption.fromString(input);
 
             if (!option.isPresent()) {
-                System.out.println("Invalid input. Please enter 'Q', '1', '2', '0', or 'X'.");
+                System.out.println("Invalid input. Please enter 'Q', '1', '2', '0', 'D', or 'X'.");
                 continue;
             }
 
             switch (option.get()) {
                 case INSTRUCTIONS:
-                    showInstructions(scanner);
+                    showInstructions(scanner, currentUser);
                     return;
                 case SINGLE_MIND_MODE:
-                    new SingleMindGame().play(scanner);
+                    new SingleMindGame().play(scanner, currentUser);
                     return;
                 case DOUBLE_TROUBLE:
-                    new DoubleCombinationGame().play(scanner);
+                    new DoubleCombinationGame().play(scanner, currentUser);
                     return;
                 case CLASSIC_MODE:
-                    new ClassicModeGame().play(scanner);
+                    new ClassicModeGame().play(scanner, currentUser);
+                    return;
+                case DISPLAY_USER_DATA:
+                    displayUserData(currentUser);
                     return;
                 case QUIT:
                     System.out.println("Quitting the game. Goodbye!");
+                    UserDataManager.saveUser(currentUser);
                     System.exit(0);
             }
         }
     }
 
-    private static void showInstructions(Scanner scanner) {
+    private static void displayUserData(User currentUser) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\n-----USER DATA-----");
+        System.out.println(currentUser);
+        System.out.println("-------------------\n");
+        System.out.println("Enter 'M' to return to the main menu.");
+        System.out.println("Enter 'X' to quit the game.");
+        System.out.print("ENTER HERE: ");
+
+        String input = scanner.nextLine().trim().toUpperCase();
+        if (input.equals("M")) {
+            mainMenu(currentUser);
+        } else if (input.equals("X")) {
+            System.out.println("Quitting the game. Goodbye!");
+            UserDataManager.saveUser(currentUser);
+            System.exit(0);
+        } else {
+            System.out.println("Invalid input. Returning to main menu.");
+            mainMenu(currentUser);
+        }
+    }
+
+    private static void showInstructions(Scanner scanner, User currentUser) {
         System.out.println("\n-----INTRODUCTION & HINTS-----");
         System.out.println("CLASSIC MODE: ");
         System.out.println("You will have 10 tries to figure out the four-digit number combination I am thinking of with minimal hints!");
@@ -92,7 +125,7 @@ public class GameApp {
         System.out.println("Enter 'X' to quit the game.");
         System.out.println(ANSI_BLACK_BACKGROUND + "ENTER HERE:" + ANSI_RESET);
 
-        handleUserInput(scanner);
+        handleUserInput(scanner, currentUser);
     }
 
     public static String randomNumber() {

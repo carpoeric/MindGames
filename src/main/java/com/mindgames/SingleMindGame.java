@@ -5,7 +5,7 @@ import java.util.Arrays;
 import static com.mindgames.GameApp.*;
 
 public class SingleMindGame {
-    public void play(Scanner scanner) {
+    public void play(Scanner scanner, User currentUser) {
         String randomNumber = randomNumber();
         char[] arrayRandomNumber = randomNumber.toCharArray();
         System.out.println("\nSingle Mind Mode!\nPlease type your first guess: ");
@@ -21,6 +21,9 @@ public class SingleMindGame {
             if (Arrays.equals(arrayNumberTyped, arrayRandomNumber)) {
                 printColoredOutput(arrayNumberTyped, ANSI_GREEN_BACKGROUND);
                 System.out.println("\n\nAwesome! You solved that in \u001B[32m" + tries + "\u001B[0m tries.");
+                currentUser.setScore(currentUser.getScore() + 10);
+                currentUser.setGamesPlayed(currentUser.getGamesPlayed() + 1);
+                UserDataManager.saveUser(currentUser);
                 break;
             } else {
                 printHints(arrayNumberTyped, arrayRandomNumber);
@@ -29,6 +32,9 @@ public class SingleMindGame {
 
             if (tries == 10) {
                 System.out.println("\nLooks like you didn't get it. Better luck next time!");
+                currentUser.setScore(currentUser.getScore() + 5);
+                currentUser.setGamesPlayed(currentUser.getGamesPlayed() + 1);
+                UserDataManager.saveUser(currentUser);
             }
             tries++;
         }
@@ -44,15 +50,16 @@ public class SingleMindGame {
         System.out.println(ANSI_BLACK_BACKGROUND + "ENTER HERE:" + ANSI_RESET);
         String scanInput = scanner.nextLine().trim().toUpperCase();
         if (scanInput.equals("1")) {
-            new SingleMindGame().play(scanner);
+            new SingleMindGame().play(scanner, currentUser);
         } else if (scanInput.equals("2")) {
-           new DoubleCombinationGame().play(scanner);
+            new DoubleCombinationGame().play(scanner, currentUser);
         } else if (scanInput.equals("M")) {
-            GameApp.mainMenu();
+            GameApp.mainMenu(currentUser);
         } else if (scanInput.equals("0")) {
-            new ClassicModeGame().play(scanner);
+            new ClassicModeGame().play(scanner, currentUser);
         } else if (scanInput.equals("X")) {
             System.out.println("Quitting the game. Goodbye!");
+            UserDataManager.saveUser(currentUser);
             System.exit(0);
         }
     }

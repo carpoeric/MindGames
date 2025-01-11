@@ -29,12 +29,11 @@ class GameAppTest {
         assertEquals(GameOption.CLASSIC_MODE, GameOption.fromString("0").orElse(null));
         assertEquals(GameOption.SINGLE_MIND_MODE, GameOption.fromString("1").orElse(null));
         assertEquals(GameOption.DOUBLE_TROUBLE, GameOption.fromString("2").orElse(null));
-        assertEquals(GameOption.MAIN_MENU, GameOption.fromString("M").orElse(null));
+        assertEquals(GameOption.DISPLAY_USER_DATA, GameOption.fromString("D").orElse(null));
         assertEquals(GameOption.QUIT, GameOption.fromString("X").orElse(null));
         assertEquals(GameOption.INSTRUCTIONS, GameOption.fromString("Q").orElse(null));
         assertNull(GameOption.fromString("invalid").orElse(null));
     }
-
     /**
      * Tests that the randomNumber method handles network failures gracefully.
      */

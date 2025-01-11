@@ -5,76 +5,75 @@ import java.util.Arrays;
 import static com.mindgames.GameApp.*;
 
 public class DoubleCombinationGame {
-    public void play(Scanner scanner) {
+    public void play(Scanner scanner, User currentUser) {
         String randomNumber1 = randomNumber();
         String randomNumber2 = randomNumber();
         char[] arrayRandomNumber1 = randomNumber1.toCharArray();
         char[] arrayRandomNumber2 = randomNumber2.toCharArray();
-        boolean solved1 = false;
-        boolean solved2 = false;
-        System.out.println("\nWelcome to DOUBLE TROUBLE!\nPlease type your first guess: ");
+        System.out.println("\nDouble Trouble Mode!\nPlease type your first guess: ");
 
         int tries = 1;
         while (tries <= 12) {
-            String numberInput = getValidGuess(scanner);
-            char[] arrayNumberTyped = numberInput.toCharArray();
+            String numberInput1 = getValidGuess(scanner);
+            String numberInput2 = getValidGuess(scanner);
+            char[] arrayNumberTyped1 = numberInput1.toCharArray();
+            char[] arrayNumberTyped2 = numberInput2.toCharArray();
 
-            System.out.println("Guess " + tries + "/12: " + numberInput);
+            System.out.println("Guess " + tries + "/12: " + numberInput1 + " and " + numberInput2);
 
             System.out.print("Combination 1: ");
-            if (!solved1) {
-                solved1 = Arrays.equals(arrayNumberTyped, arrayRandomNumber1);
-                if (solved1) {
-                    printColoredOutput(arrayNumberTyped, ANSI_GREEN_BACKGROUND);
-                } else {
-                    printHints(arrayNumberTyped, arrayRandomNumber1);
-                }
+            if (Arrays.equals(arrayNumberTyped1, arrayRandomNumber1)) {
+                printColoredOutput(arrayNumberTyped1, ANSI_GREEN_BACKGROUND);
             } else {
-                printColoredOutput(arrayRandomNumber1, ANSI_GREEN_BACKGROUND);
+                printHints(arrayNumberTyped1, arrayRandomNumber1);
             }
 
             System.out.print("Combination 2: ");
-            if (!solved2) {
-                solved2 = Arrays.equals(arrayNumberTyped, arrayRandomNumber2);
-                if (solved2) {
-                    printColoredOutput(arrayNumberTyped, ANSI_GREEN_BACKGROUND);
-                } else {
-                    printHints(arrayNumberTyped, arrayRandomNumber2);
-                }
+            if (Arrays.equals(arrayNumberTyped2, arrayRandomNumber2)) {
+                printColoredOutput(arrayNumberTyped2, ANSI_GREEN_BACKGROUND);
             } else {
-                printColoredOutput(arrayRandomNumber2, ANSI_GREEN_BACKGROUND);
+                printHints(arrayNumberTyped2, arrayRandomNumber2);
             }
 
-            if (solved1 && solved2) {
+            if (Arrays.equals(arrayNumberTyped1, arrayRandomNumber1) && Arrays.equals(arrayNumberTyped2, arrayRandomNumber2)) {
                 System.out.println("\n\nAwesome! You solved both combinations in \u001B[32m" + tries + "\u001B[0m tries.");
+                currentUser.setScore(currentUser.getScore() + 20);
+                currentUser.setGamesPlayed(currentUser.getGamesPlayed() + 1);
+                UserDataManager.saveUser(currentUser);
                 break;
-            } else {
-                System.out.print("Enter guess: ");
             }
 
             if (tries == 12) {
                 System.out.println("\nLooks like you didn't get it. Better luck next time!");
+                currentUser.setScore(currentUser.getScore() + 5);
+                currentUser.setGamesPlayed(currentUser.getGamesPlayed() + 1);
+                UserDataManager.saveUser(currentUser);
             }
             tries++;
         }
+        System.out.print("The correct combinations are... ");
+        printColoredOutput(arrayRandomNumber1, ANSI_GREEN_BACKGROUND);
+        printColoredOutput(arrayRandomNumber2, ANSI_GREEN_BACKGROUND);
+
         System.out.println("\nWould you like to play again?");
         System.out.println("Enter '0' to start Classic Mode");
         System.out.println("Enter '1' to play Single Mind Mode");
-        System.out.println("Enter '2' to play DOUBLE TROUBLE again!");
+        System.out.println("Enter '2' to play Double Trouble again!");
         System.out.println("Enter 'M' to return to the main menu.");
         System.out.println("Enter 'X' to quit the game.");
         System.out.println(ANSI_BLACK_BACKGROUND + "ENTER HERE:" + ANSI_RESET);
         String scanInput = scanner.nextLine().trim().toUpperCase();
         if (scanInput.equals("1")) {
-            new SingleMindGame().play(scanner);
+            new SingleMindGame().play(scanner, currentUser);
         } else if (scanInput.equals("2")) {
-            new DoubleCombinationGame().play(scanner);
+            new DoubleCombinationGame().play(scanner, currentUser);
         } else if (scanInput.equals("M")) {
-            GameApp.mainMenu();
+            GameApp.mainMenu(currentUser);
         } else if (scanInput.equals("0")) {
-            new ClassicModeGame().play(scanner);
+            new ClassicModeGame().play(scanner, currentUser);
         } else if (scanInput.equals("X")) {
             System.out.println("Quitting the game. Goodbye!");
+            UserDataManager.saveUser(currentUser);
             System.exit(0);
         }
     }

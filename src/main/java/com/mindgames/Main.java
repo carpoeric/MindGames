@@ -12,7 +12,7 @@ public class Main {
         System.out.println(ANSI_BLACK_BACKGROUND + "/\\ \"-./  \\ /\\ \\ /\\ \"-.\\ \\ /\\  __-. /\\  ___\\ /\\  __ \\ /\\ \"-./  \\ /\\  ___\\ /\\  ___\\   " + ANSI_RESET);
         System.out.println(ANSI_BLACK_BACKGROUND + "\\ \\ \\-./\\ \\\\ \\ \\\\ \\ \\-.  \\\\ \\ \\/\\ \\\\ \\ \\__ \\\\ \\  __ \\\\ \\ \\-./\\ \\\\ \\  __\\ \\ \\___  \\  " + ANSI_RESET);
         System.out.println(ANSI_BLACK_BACKGROUND + " \\ \\_\\ \\ \\_\\\\ \\_\\\\ \\_\\\\\"\\_\\\\ \\____- \\ \\_____\\\\ \\_\\ \\_\\\\ \\_\\ \\ \\_\\\\ \\_____\\\\/\\_____\\ " + ANSI_RESET);
-        System.out.println(ANSI_BLACK_BACKGROUND + "  \\/_/  \\/_/ \\/_/ \\/_/ \\/____/  \\/_____/ \\/_/\\/_/ \\/_/  \\/_/ \\/_____/ \\/_____/ " + ANSI_RESET);
+        System.out.println(ANSI_BLACK_BACKGROUND + "  \\/_/  \\/_/ \\/_/ \\/_/ \\/_/ \\/____/  \\/_____/ \\/_/\\/_/ \\/_/  \\/_/ \\/_____/ \\/_____/ " + ANSI_RESET);
         System.out.println(ANSI_BLACK_BACKGROUND + "                                                                                    " + ANSI_RESET);
         System.out.println("\u001B[32mPlease enter your username! If you don't have one, a new user will be created.\u001B[0m");
         System.out.println(ANSI_BLACK_BACKGROUND + "ENTER HERE:" + ANSI_RESET);

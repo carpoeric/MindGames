@@ -5,28 +5,33 @@ import java.util.Arrays;
 import static com.mindgames.GameApp.*;
 
 public class ClassicModeGame {
+    private char[] arrayRandomNumber;
+
     public void play(Scanner scanner, User currentUser) {
         String randomNumber = randomNumber();
-        char[] arrayRandomNumber = randomNumber.toCharArray();
-        System.out.println("\nClassic Mode!\nPlease type your first guess: ");
+        arrayRandomNumber = randomNumber.toCharArray();
+        System.out.println("\nWelcome to Classic Mode!\nPlease type your first guess: ");
+        System.out.println("If you're stumped, you can press 'H' for a hint! (one number in its correct location)");
 
         int tries = 1;
         while (tries <= 10) {
             String numberInput = getValidGuess(scanner);
-            char[] arrayNumberTyped = numberInput.toCharArray();
+            if (numberInput.equals("H")) {
+                provideHint();
+                continue;
+            }
 
+            char[] arrayNumberTyped = numberInput.toCharArray();
             System.out.println("Guess " + tries + "/10: " + numberInput);
 
-            System.out.print("Combination: ");
             if (Arrays.equals(arrayNumberTyped, arrayRandomNumber)) {
-                printColoredOutput(arrayNumberTyped, ANSI_GREEN_BACKGROUND);
                 System.out.println("\n\nAwesome! You solved that in \u001B[32m" + tries + "\u001B[0m tries.");
                 currentUser.setScore(currentUser.getScore() + 30);
                 currentUser.setGamesPlayed(currentUser.getGamesPlayed() + 1);
                 UserDataManager.saveUser(currentUser);
                 break;
             } else {
-                printHints(arrayNumberTyped, arrayRandomNumber);
+                printMinimalFeedback(arrayNumberTyped, arrayRandomNumber);
                 System.out.print("Enter guess: ");
             }
 
@@ -42,7 +47,7 @@ public class ClassicModeGame {
         printColoredOutput(arrayRandomNumber, ANSI_GREEN_BACKGROUND);
 
         System.out.println("\nWould you like to play again?");
-        System.out.println("Enter '0' to start Classic Mode again!");
+        System.out.println("Enter '0' to play Classic Mode again!");
         System.out.println("Enter '1' to play Single Mind Mode");
         System.out.println("Enter '2' to play DOUBLE TROUBLE");
         System.out.println("Enter 'M' to return to the main menu.");
@@ -53,42 +58,63 @@ public class ClassicModeGame {
             new SingleMindGame().play(scanner, currentUser);
         } else if (scanInput.equals("2")) {
             new DoubleCombinationGame().play(scanner, currentUser);
-        } else if (scanInput.equals("M")) {
-            GameApp.mainMenu(currentUser);
         } else if (scanInput.equals("0")) {
             new ClassicModeGame().play(scanner, currentUser);
+        } else if (scanInput.equals("M")) {
+            GameApp.mainMenu(currentUser);
         } else if (scanInput.equals("X")) {
             System.out.println("Quitting the game. Goodbye!");
-            UserDataManager.saveUser(currentUser);
             System.exit(0);
         }
     }
 
     private String getValidGuess(Scanner scanner) {
-        String numberInput = scanner.nextLine().trim();
-        while (numberInput.length() != 4 || !numberInput.matches("[0-7]+")) {
+        String numberInput = scanner.nextLine().trim().toUpperCase();
+        while (!(numberInput.length() == 4 && numberInput.matches("[0-7]+")) && !numberInput.equals("H")) {
             System.out.print("Invalid guess... Give it another go: ");
-            numberInput = scanner.nextLine().trim();
+            numberInput = scanner.nextLine().trim().toUpperCase();
         }
         return numberInput;
+    }
+
+    private void provideHint() {
+        int randomIndex = (int) (Math.random() * arrayRandomNumber.length);
+        System.out.println("Hint: The digit at position " + (randomIndex + 1) + " is " + arrayRandomNumber[randomIndex]);
+    }
+
+    private void printMinimalFeedback(char[] arrayNumberTyped, char[] arrayRandomNumber) {
+        int correctNumbers = 0;
+        int correctLocations = 0;
+        boolean[] matched = new boolean[4];
+        boolean[] guessed = new boolean[4];
+
+        for (int i = 0; i < 4; i++) {
+            if (arrayNumberTyped[i] == arrayRandomNumber[i]) {
+                correctLocations++;
+                correctNumbers++;
+                matched[i] = true;
+                guessed[i] = true;
+            }
+        }
+
+        for (int i = 0; i < 4; i++) {
+            if (!guessed[i]) {
+                for (int j = 0; j < 4; j++) {
+                    if (!matched[j] && arrayNumberTyped[i] == arrayRandomNumber[j]) {
+                        correctNumbers++;
+                        matched[j] = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        System.out.println(correctNumbers + " correct number(s) and " + correctLocations + " correct location(s)");
     }
 
     private void printColoredOutput(char[] array, String color) {
         for (char c : array) {
             System.out.print(color + " " + c + " " + ANSI_RESET);
-        }
-        System.out.println();
-    }
-
-    private void printHints(char[] arrayNumberTyped, char[] arrayRandomNumber) {
-        for (int i = 0; i < 4; i++) {
-            if (arrayNumberTyped[i] == arrayRandomNumber[i]) {
-                System.out.print(ANSI_GREEN_BACKGROUND + " " + arrayNumberTyped[i] + " " + ANSI_RESET);
-            } else if (new String(arrayRandomNumber).contains(String.valueOf(arrayNumberTyped[i]))) {
-                System.out.print(ANSI_YELLOW_BACKGROUND + " " + arrayNumberTyped[i] + " " + ANSI_RESET);
-            } else {
-                System.out.print(ANSI_BLACK_BACKGROUND + " " + arrayNumberTyped[i] + " " + ANSI_RESET);
-            }
         }
         System.out.println();
     }

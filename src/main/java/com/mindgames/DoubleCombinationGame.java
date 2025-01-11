@@ -10,32 +10,44 @@ public class DoubleCombinationGame {
         String randomNumber2 = randomNumber();
         char[] arrayRandomNumber1 = randomNumber1.toCharArray();
         char[] arrayRandomNumber2 = randomNumber2.toCharArray();
+        boolean combination1Solved = false;
+        boolean combination2Solved = false;
         System.out.println("\nDouble Trouble Mode!\nPlease type your first guess: ");
 
         int tries = 1;
         while (tries <= 12) {
-            String numberInput1 = getValidGuess(scanner);
-            String numberInput2 = getValidGuess(scanner);
-            char[] arrayNumberTyped1 = numberInput1.toCharArray();
-            char[] arrayNumberTyped2 = numberInput2.toCharArray();
+            String numberInput = getValidGuess(scanner);
+            char[] arrayNumberTyped = numberInput.toCharArray();
 
-            System.out.println("Guess " + tries + "/12: " + numberInput1 + " and " + numberInput2);
+            System.out.println("Guess " + tries + "/12: " + numberInput);
 
-            System.out.print("Combination 1: ");
-            if (Arrays.equals(arrayNumberTyped1, arrayRandomNumber1)) {
-                printColoredOutput(arrayNumberTyped1, ANSI_GREEN_BACKGROUND);
+            if (!combination1Solved) {
+                System.out.print("Combination 1: ");
+                if (Arrays.equals(arrayNumberTyped, arrayRandomNumber1)) {
+                    printColoredOutput(arrayNumberTyped, ANSI_GREEN_BACKGROUND);
+                    combination1Solved = true;
+                } else {
+                    printHints(arrayNumberTyped, arrayRandomNumber1);
+                }
             } else {
-                printHints(arrayNumberTyped1, arrayRandomNumber1);
+                System.out.print("Combination 1: ");
+                printColoredOutput(arrayRandomNumber1, ANSI_GREEN_BACKGROUND);
             }
 
-            System.out.print("Combination 2: ");
-            if (Arrays.equals(arrayNumberTyped2, arrayRandomNumber2)) {
-                printColoredOutput(arrayNumberTyped2, ANSI_GREEN_BACKGROUND);
+            if (!combination2Solved) {
+                System.out.print("Combination 2: ");
+                if (Arrays.equals(arrayNumberTyped, arrayRandomNumber2)) {
+                    printColoredOutput(arrayNumberTyped, ANSI_GREEN_BACKGROUND);
+                    combination2Solved = true;
+                } else {
+                    printHints(arrayNumberTyped, arrayRandomNumber2);
+                }
             } else {
-                printHints(arrayNumberTyped2, arrayRandomNumber2);
+                System.out.print("Combination 2: ");
+                printColoredOutput(arrayRandomNumber2, ANSI_GREEN_BACKGROUND);
             }
 
-            if (Arrays.equals(arrayNumberTyped1, arrayRandomNumber1) && Arrays.equals(arrayNumberTyped2, arrayRandomNumber2)) {
+            if (combination1Solved && combination2Solved) {
                 System.out.println("\n\nAwesome! You solved both combinations in \u001B[32m" + tries + "\u001B[0m tries.");
                 currentUser.setScore(currentUser.getScore() + 20);
                 currentUser.setGamesPlayed(currentUser.getGamesPlayed() + 1);
@@ -48,6 +60,7 @@ public class DoubleCombinationGame {
                 currentUser.setScore(currentUser.getScore() + 5);
                 currentUser.setGamesPlayed(currentUser.getGamesPlayed() + 1);
                 UserDataManager.saveUser(currentUser);
+                break;
             }
             tries++;
         }

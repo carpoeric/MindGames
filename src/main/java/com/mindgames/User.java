@@ -5,14 +5,20 @@ public class User {
     private int score;
     private int gamesPlayed;
 
+    // Constructor
     public User(String username) {
         this.username = username;
         this.score = 0;
         this.gamesPlayed = 0;
     }
 
+    // Getters and setters
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public int getScore() {
@@ -31,12 +37,9 @@ public class User {
         this.gamesPlayed = gamesPlayed;
     }
 
+    // Override toString method
     @Override
     public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", score=" + score +
-                ", gamesPlayed=" + gamesPlayed +
-                '}';
+        return "Username: " + username + " | Score: " + score + " | Games Played: " + gamesPlayed;
     }
 }

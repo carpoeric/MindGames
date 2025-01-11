@@ -72,12 +72,21 @@ It handles user input and navigates to the appropriate game mode based on the us
 
 ## Dependencies
 - **JUnit Jupiter Engine**: Used for writing and running tests.
-  ```xml
+```xml
   <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>5.8.1</version>
       <scope>test</scope>
+  </dependency>
+  ```
+- **Gson**: A Java library used to convert Java Objects into their JSON representation and vice versa. In this project, it handles user data serialization and deserialization.
+
+```xml
+  <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.9</version>
   </dependency>
   ```
 ## Testing
